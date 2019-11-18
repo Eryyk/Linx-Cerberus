@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis&display=swap');
+
+*{
+    font-family: 'Dosis', sans-serif;
+}
+
+.bg-linx{
+    background-color: #681F84 !important
+}
+.f-linx{
+    font-family: 'Dosis' !important;
+    color: #fff !important;
+}
+.b-r-linx{
+    border-radius: 10px !important;
+}
+.bt-r-linx{
+    border-radius: 10px 10px 0px 0px !important
+}
+.hmx-linx{
+    height: 100vh !important;
+}
+.bdt-linx{
+    height: 20vh !important;
+}
+.bdm-linx{
+    height: 35vh !important;
+}
+.gb-linx{
+    height: auto !important;
+}
+.j-c-e{
+    justify-content: end !important    
+}
+#dropdown-basic-button{
+    border: 0;
+    background-color: #681F84 !important
+}
+#dropdown-basic-input-button{
+    border: 0;
+    text-decoration-color: black;
+    background-color: rgb(255, 255, 255) !important
+}
+.b-linx{
+    border-radius: 200px !important;
+    border: 0px !important;
+    background-image: linear-gradient(-90deg, #ffc025, #ff3925) !important
+}
+.map-linx{
+    height: 100% !important;
+    width: 50vh !important;
+    
+}
+.h-linx{
+    height: 50vh !important;
+}
+.t-w-h{
+    height: 100vh !important;
+    width: 100vw !important;
+}
+.hw-a{
+    height: 37vh !important;
+}
+.f-s{
+    font-size: 5em !important;
+    font-family: 'Dosis', sans-serif !important;
+}
+.al-linx{
+    align-items: center !important
+}
+.f-login{
+    height: 55% !important;
+    width: 45vh !important
+}
+.brd-i{
+    border: 0px !important;
+    border-bottom: 2px solid #681F84 !important;
+    border-radius: 0px !important;
+}
+.a-l{
+    align-items: center !important;
+}

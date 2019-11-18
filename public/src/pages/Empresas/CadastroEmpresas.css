@@ -1,0 +1,27 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Dosis', sans-serif;
+}
+
+.containerRaiz {
+    height: 100vh;
+}
+
+ .c1{
+     height: 100vh !important;
+     border: none;
+     display: flex;
+     padding: 3% 3%;
+
+ }
+
+ .divSuperior{
+ }
+
+ #imgNavegador {
+    height: auto;
+    width: 90%;
+    padding: 10px;
+}

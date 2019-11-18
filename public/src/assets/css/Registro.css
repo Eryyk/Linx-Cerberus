@@ -1,0 +1,34 @@
+#MainRegistro{
+    display: flex;
+}
+
+#PageRegistro{
+    padding: 10px;
+}
+
+.CardHeader_Registro{
+    background:#681F84;
+    color: white
+}
+
+#Registro_InfoGerais{
+    width: 85vw;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+#Card_cronometro {
+    padding: 5px;
+}
+
+.input_cronometro{
+    display: flex;
+    height: 40px;
+}
+
+.input_cronometro input{
+    border: 1px solid;
+    border-radius: 5px;
+    padding-left: 3px;
+}

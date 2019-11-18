@@ -1,0 +1,195 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Dosis";
+  list-style-type: none;
+}
+body{
+  background-color: #E8e8e8;
+
+}
+.fundo{
+  background-color: #E8e8e8;
+}
+.Top{
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+}
+.TResets{
+  background-color: #f9f9f9;
+  border-radius: 10px 10px 10px 10px;
+  height: 30vh;
+  width: 20vw;
+  margin: 30px;
+}
+.TopTResets{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  text-align: center;
+  padding: 10px;
+
+}
+h2{
+  background-color: none;
+  color: #f9f9f9;
+}
+.UResets{
+  background-color: #f9f9f9;
+  border-radius: 10px 10px 10px 10px;
+  height: 30vh;
+  width: 20vw;
+  margin: 30px;
+}
+.TopUResets{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  text-align: center;
+  padding: 10px;
+
+}
+.Alerte{
+  background-color: #f9f9f9;
+  border-radius: 10px 10px 10px 10px;
+  height: 30vh;
+  width: 20vw;
+  margin: 30px;
+}
+.TopAlerte{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  text-align: center;
+  padding: 10px;
+
+}
+.UR{
+  background-color: #F2F2F2;
+  border-radius: 10px 10px 0px 0px;
+  padding: 20px;
+}
+.URC{
+  display: flex;
+  justify-content: space-between;
+}
+.TopUR{
+  border-radius: 20px 20px 0px 0px;
+  text-align: center;
+}
+.URC{
+
+}
+/* .Grafico{
+  background-color: #ffffff;
+  border-radius: 10px 10px 10px 10px;
+  height: 40vh;
+  width: 70vw;
+  margin: 30px;
+} */
+.TopGrafico{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
+
+}
+.G{
+  background-color: #ffffff;
+  border-radius: 10px 10px 10px 10px;
+  width: 55vw;
+  height: 35vh;
+
+}
+.GA{
+  height: 100%;
+  padding: 10px;
+
+}
+.UsResets{
+  background-color: #ffffff;
+  border-radius: 10px 10px 10px 10px;
+  height: 35vh;
+  width:40vw;
+}
+.TopUsResets{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
+
+}  
+#Tabela{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.linhaTabela{
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+.container{
+  width: 100%;
+  height: max-content;
+  border-bottom:solid 2px rgb(6, 5, 5); 
+  display: flex;
+}
+thead{
+  width: 100%;
+  font-size: 25px;
+}
+th{
+  height: max-content;
+  width: 100vw;
+  text-align: inherit;
+}
+#tabela-liste{
+  width: 100%;
+}
+
+td{
+}
+hr{
+  width: auto;
+}
+.Resets{
+  background-color: #f9f9f9;
+  border-radius: 10px 10px 0px 0px;
+  height: auto;
+  margin-top: 20px;
+}
+.TopResets{
+  background-color: #681F84;
+  border-radius: 10px 10px 0px 0px;
+  justify-content: space-evenly;
+  display: flex;
+  text-align: inherit;
+  padding: 10px;
+
+
+}
+.ResetsT{
+  height: max-content;
+  width: 100vw;
+  text-align: inherit;
+}
+.ResetsS{
+  height: max-content;
+  width: 100vw;
+  text-align: end;
+
+}
+.SEstado{
+  background: none;
+  border: none;
+}
+.SCidade{
+  background: none;
+  border: none;
+}
+
+
+
+
+
+
