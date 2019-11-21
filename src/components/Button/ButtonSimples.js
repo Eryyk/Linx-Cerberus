@@ -11,7 +11,6 @@ export default class ButtonSimples extends Component {
         return (
             <Button variant="primary"
             className="b-linx m-3"
-            onClick={this.props.onClick}
             >
                 Cadastrar
             </Button>

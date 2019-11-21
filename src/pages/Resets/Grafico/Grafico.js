@@ -74,7 +74,7 @@ export default class Grafico extends Component {
   componentDidMount() {
     axios.get(Url + 'Reiniciacoes')
       .then(data => {
-        console.log("passou", data.data);
+        console.log(data.data);
         data.data.map((item) => {
           this.state.labelsRelatorioResets.push(this.formataData(item.date))
         })

@@ -12,6 +12,7 @@ import CadastroEndereco from './pages/Enderecos/CadastroEnderecos';
 import CadastroPlaca from './pages/Placas/CadastroPlacas'
 
 import AlterarTempos from './pages/Registros/AlterarTempos';
+
 import CadastroPlacaEndereco from './pages/Registros/CadastroPlacaEndereco';
 
 import Dashboard from './pages/Resets/Dashboard';
@@ -60,8 +61,7 @@ const rotas = (
                 {/* <Permissao exact path='/alterarTempos' component={AlterarTempos} /> */}
                 <Route exact path='/alterarTempos' component={AlterarTempos} />
 
-                <Route exact path='/registrarPlaca' component={CadastroPlacaEndereco} />
-                {/* <Permissao exact path='/registrarPlaca' component={CadastroPlacaEndereco} /> */}
+                {/* <Route exact path='/registrarPlaca' component={CadastroPlacaEndereco} /> */}
                 <Route exact path='/registrarPlaca' component={CadastroPlacaEndereco} />
                 {/* <Permissao exact path='/Dashboard' component={Dashboard} /> */}
                 <Route exact path='/Dashboard' component={Dashboard} />

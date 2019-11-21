@@ -217,7 +217,15 @@ export default class CadastroPlaca extends Component {
                                         <Row className="d-flex">
                                             <Card.Body className="d-contents text-dark">
                                                 <Card.Text>
-                                                    Logradouro
+                                                    Logradouro: {
+                                                        this.state.listaPlacasEnderecos.map(function (element) {
+                                                            return (
+                                                                <tr key={element.id}>
+                                                                    <Card.Text>{element.placaId.codigo}</Card.Text>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
                                                 </Card.Text>
                                                 <Card.Text>
                                                     Empresa

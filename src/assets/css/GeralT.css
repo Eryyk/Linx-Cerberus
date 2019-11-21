@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Dosis&display=swap');
 
 *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     font-family: 'Dosis', sans-serif;
+    list-style-type: none;
+
 }
 
 .bg-linx{
@@ -44,7 +49,9 @@
 .b-linx{
     border-radius: 200px !important;
     border: 0px !important;
-    background-image: linear-gradient(-90deg, #ffc025, #ff3925) !important
+    background-image: linear-gradient(-90deg, #ffc025, #ff3925) !important;
+    width: 4em !important;
+    height: 2em !important;
 }
 .map-linx{
     height: 100% !important;
@@ -79,4 +86,14 @@
 }
 .a-l{
     align-items: center !important;
+}
+.error{
+    color: #ff3925;
+}
+.editar{
+    border-radius: 200px !important;
+    border: 0px !important;
+    width: 4em !important;
+    height: 2em !important;
+    background-color: rgb(255, 199, 14) !important;
 }

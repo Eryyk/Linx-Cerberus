@@ -22,10 +22,13 @@ class Login extends Component {
     efetuarLogin = (event) => {
         event.preventDefault();
 
-        // localStorage.removeItem("Cerberus-chave-autenticacao");
+
+
+        localStorage.removeItem("Cerberus-chave-autenticacao");
 
         Axios.post(Url + 'Login', {
-            email: this.state.email, senha: this.state.senha
+            email: this.state.email
+            , senha: this.state.senha
         })
         .then(data => {
             // console.log(data.data);
@@ -79,8 +82,7 @@ class Login extends Component {
                                                 placeholder="Senha"
                                                 onChange={this.atualizaEstadoSenha.bind(this)} />
                                                 
-                                        </Form.Group>
-
+                                            </Form.Group>
                                         <Button
                                             value="Login"
                                             variant="outline-success"
