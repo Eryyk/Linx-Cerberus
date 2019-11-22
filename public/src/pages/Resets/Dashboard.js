@@ -46,9 +46,7 @@ export default class CadastroPlaca extends Component {
                 'Content-Type': 'application/json'
             }
         })
-            .then(data => {
-                console.log(data.data)
-            })
+            
     }
     listarPlacas() {
         Axios.get(Url + "Placas", {
@@ -57,9 +55,7 @@ export default class CadastroPlaca extends Component {
                 'Content-Type': 'application/json'
             }
         })
-            .then(data => {
-                console.log(data.data)
-            })
+            
     }
 
     listarPlacaEnderecos() {
@@ -69,9 +65,10 @@ export default class CadastroPlaca extends Component {
                 'Content-Type': 'application/json'
             }
         })
-            .then(data => {
-                console.log(data.data)
-            })
+        .then(data => {
+            console.log(data.data)
+        })
+            
     }
 
     render() {
@@ -79,11 +76,7 @@ export default class CadastroPlaca extends Component {
             <Container fluid={true}>
                 <Row>
                     <Col xs="3" lg="2" className="p-0">
-                        {/* if (parseJwt().Role === "Administrador") { */}
                             <MenuNav></MenuNav>
-                        {/* }else{
-                            <MenuNavComum></MenuNavComum>
-                        } */}
 
                     </Col>
 
@@ -124,11 +117,11 @@ export default class CadastroPlaca extends Component {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    this.state.listaPlacasEnderecos.map(function (placaEndereco) {
+                                                    this.state.listaPlacasEnderecos.map(function (element) {
                                                         return (
-                                                            <tr key={placaEndereco.id}>
-                                                                <td>{placaEndereco.placaId.codigo}</td>
-                                                                <td>{placaEndereco.enderecoId.logradouro}</td>
+                                                            <tr key={element.id}>
+                                                                <td>{element.enderecoId}</td>
+                                                                <td>{element.placaId}</td>
                                                             </tr>
                                                         );
                                                     })
