@@ -56,6 +56,7 @@
 .map-linx{
     height: 100% !important;
     width: 50vh !important;
+    margin-bottom: 40vh !important ;
     
 }
 .h-linx{
@@ -66,7 +67,7 @@
     width: 100vw !important;
 }
 .hw-a{
-    height: 37vh !important;
+    height: 30vh !important;
 }
 .f-s{
     font-size: 5em !important;
@@ -94,6 +95,13 @@
     border-radius: 200px !important;
     border: 0px !important;
     width: 4em !important;
+    height: 2em !important;
+    background-color: rgb(255, 199, 14) !important;
+}
+.maisDetalhes{
+    border-radius: 200px !important;
+    border: 0px !important;
+    width: 6em !important;
     height: 2em !important;
     background-color: rgb(255, 199, 14) !important;
 }

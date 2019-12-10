@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default class ButtonSimples extends Component {
+const ButtonSimples = () => {
 
-    constructor(props){
-        super(props);
-    }
+    const [loading, setLoading] = useState(false);
 
-    render(){
+
         return (
-            <Button variant="primary"
-            className="b-linx m-3"
-            >
-                Cadastrar
-            </Button>
+            <button type="submit" 
+            className="b-linx m-2 text-light" 
+            disabled={!loading ? '' : 'none'}>{loading ? "Salvando..." : "Salvar"}</button>
         )
-    }
+    
 }
+export default ButtonSimples;

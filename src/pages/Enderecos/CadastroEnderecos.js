@@ -3,7 +3,7 @@ import Axios from 'axios';
 import Url from '../../services/api';
 import MenuNav from '../../components/Menu/MenuNavegacao';
 import useForm from "react-hook-form";
-
+import ButtonSimples from '../../components/Button/ButtonSimples';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +17,11 @@ import {
     Button
 } from 'react-bootstrap';
 
+import cep from 'cep-promise';
+ 
 const CadastroEndereco = () => {
+
+   
 
     const { handleSubmit, register, errors } = useForm();
 
@@ -29,6 +33,7 @@ const CadastroEndereco = () => {
     const [logradouro, setLogradouro] = useState('');
     const [numero, setNumero] = useState('');
     const [complemento, setComplemento] = useState('');
+
     const [observacao, setObservacao] = useState('');
     const [empresaId, setEmpresaId] = useState(0);
 
@@ -43,10 +48,18 @@ const CadastroEndereco = () => {
         UFs();
     }, [])
 
+    const UFs = () => {
+        Axios.get("http://servicodados.ibge.gov.br/api/v1/localidades/estados")
+            .then(data => {
+                setUF(data.data);
+            })
+            .catch(erro => { console.log(erro) })
+    }
+
     const listaEmpresas = () => {
         Axios.get(Url + "empresas")
             .then(data => {
-                this.setState({ listaEmpresa: data.data })
+                setEmpresas(data.data)
             })
             .catch(error => {
                 console.log(error)
@@ -56,16 +69,33 @@ const CadastroEndereco = () => {
     const listaEnderecos = () => {
         Axios.get(Url + "Enderecos")
             .then(data => {
-                this.setState({ listaEnderecos: data.data })
+                setEnderecos(data.data)
             })
             .catch(error => {
-                console.log("ERRO: listagem de endereços " + error)
+                console.log(error)
             })
+    }
+
+    const editar = (id) => {
+        let endereco = enderecos.filter(item => item.id === id);
+        if (endereco.length > 0) {
+            setId(id);
+            setCep(endereco[0].cep);
+            setEstado(endereco[0].estado);
+            setCidade(endereco[0].cidade);
+            setBairro(endereco[0].bairro);
+            setLogradouro(endereco[0].logradouro);
+            setNumero(endereco[0].numero);
+            setComplemento(endereco[0].complemento);
+            setObservacao(endereco[0].observacao);
+            setEmpresaId(endereco[0].empresaId);
+        }
     }
 
     const onSubmit = event => {
 
         let Endereco = {
+            id: id,
             logradouro: logradouro,
             cep: cep,
             numero: numero,
@@ -75,35 +105,66 @@ const CadastroEndereco = () => {
             cidade: cidade,
             estado: estado,
             empresaId: empresaId
-
         }
-        // console.log(Endereco);
-        // console.log(Url+"Enderecos");
-        Axios.post(Url + "Enderecos", Endereco, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(data => {
-                listaEnderecos();
-                toast.success('Endereco Cadastrado');
+        if (id === 0) {
+            Axios.post(Url + "Enderecos", Endereco, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                    'Content-Type': 'application/json'
+                }
             })
-            .catch(erro => {
-                toast.error("Endereço não cadastrada");
+                .then(data => {
+                    listaEnderecos();
+                    toast.success('Endereco Cadastrado');
+                })
+                .catch(erro => {
+                    toast.error("Endereço não cadastrada");
+                })
+                .finally(() => { setLoading(false) })
+        } else {
+            Endereco.id = id;
+            Axios.put(Url + "Enderecos/", Endereco, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                    'Content-Type': 'application/json'
+                }
             })
-            .finally(() => { setLoading(false) })
+                .then(data => {
+                    listaEnderecos();
+                    toast.success('Endereço Alterada');
+                    setId(0);
+                    setCep();
+                    setEstado();
+                    setCidade();
+                    setBairro();
+                    setLogradouro();
+                    setNumero();
+                    setComplemento();
+                    setObservacao();
+                    setEmpresaId();
+                })
+                .catch(erro =>{
+                    // console.log(erro)
+                    toast.erro('Ocorreu um erro, tente novamente');
+                    setId(0);
+                    setCep();
+                    setEstado();
+                    setCidade();
+                    setBairro();
+                    setLogradouro();
+                    setNumero();
+                    setComplemento();
+                    setObservacao();
+                    setEmpresaId();
+                })
+                
+                .finally(() => {setLoading(false)})
+        }
     }
 
-
-    const UFs = () => {
-        Axios.get("http://servicodados.ibge.gov.br/api/v1/localidades/estados")
-            .then(data => (
-                this.setState({ listaUF: data.data }),
-                console.log(this.state.listaUf)
-            ))
-            .catch(erro => console.log(erro))
-    }
+    fetch('https://api.pagar.me/1/zipcodes/' + cep, { method: 'get' })
+    .then(Ren => Ren.json())
+    .then(console.log)
 
     return (
         <Container fluid={true}>
@@ -165,22 +226,21 @@ const CadastroEndereco = () => {
                                                         setEstado(e.target.value);
                                                     }
                                                     }
-                                                    value={uf || ''}
+                                                    value={estado || ''}
                                                     id="estado"
                                                     name="estado"
                                                     ref={register({
                                                         required: 'Estado do Local obrigatório'
                                                     })}>
-                                                    <option value="null">Selecione o estado</option>
+                                                    <option value="">Selecione o estado</option>
                                                     {
                                                         uf.map(element => (
                                                             <option key={element.id} value={element.nome}>{element.nome}</option>
                                                         ))
                                                     }
                                                 </select>
-                                                {errors.uf && <span className="error">{errors.uf.message}</span>}
+                                                {errors.estado && <span className="error">{errors.estado.message}</span>}
                                             </Form.Group>
-
                                             <Form.Group controlId="formBasicPassword" as={Col} className="">
                                                 <Form.Label className="text-dark">Cidade</Form.Label>
                                                 {/* <Form.Control type="text"
@@ -224,7 +284,7 @@ const CadastroEndereco = () => {
                                                         setBairro(e.target.value);
                                                     }
                                                     }
-                                                    value={cidade || ''}
+                                                    value={bairro || ''}
                                                     id="bairro"
                                                     name="bairro"
                                                     className="form-control"
@@ -257,7 +317,7 @@ const CadastroEndereco = () => {
                                                     ref={register({
                                                         required: 'Logradouro do Local necessário'
                                                     })} />
-                                                {errors.bairro && <span className="error">{errors.bairro.message}</span>}
+                                                {errors.logradouro && <span className="error">{errors.logradouro.message}</span>}
                                             </Form.Group>
                                             <Form.Group controlId="formBasicEmail" as={Col} className="">
                                                 <Form.Label className="text-dark">Numero</Form.Label>
@@ -302,7 +362,7 @@ const CadastroEndereco = () => {
                                                         setComplemento(e.target.value);
                                                     }
                                                     }
-                                                    value={numero || ''}
+                                                    value={complemento || ''}
                                                     id="complemento"
                                                     name="complemento"
                                                     className="form-control"
@@ -326,7 +386,7 @@ const CadastroEndereco = () => {
                                                         setObservacao(e.target.value);
                                                     }
                                                     }
-                                                    value={numero || ''}
+                                                    value={observacao || ''}
                                                     id="observacao"
                                                     name="observacao"
                                                     className="form-control"
@@ -350,24 +410,24 @@ const CadastroEndereco = () => {
                                                         setEmpresaId(e.target.value);
                                                     }
                                                     }
-                                                    value={setEmpresaId || ''}
+                                                    value={empresaId || ''}
                                                     id="empresaId"
                                                     name="empresaId"
                                                     ref={register({
                                                         required: 'Empresa do Local obrigatório'
                                                     })}>
-                                                    <option value="null">Selecione a empresa</option>
+                                                    <option value="">Selecione a empresa</option>
                                                     {
                                                         empresas.map(element => (
                                                             <option key={element.id} value={element.id}>{element.nomeFantasia}</option>
                                                         ))
                                                     }
                                                 </select>
-                                                {errors.tipoUsuario && <span className="error">{errors.tipoUsuario.message}</span>}
+                                                {errors.empresaId && <span className="error">{errors.empresaId.message}</span>}
                                             </Form.Group>
                                         </Row>
                                         <Row className="d-flex flex-row-reverse">
-                                        <button type="submit" className="b-linx m-2 text-light" disabled={!loading ? '' : 'none'}>{loading ? "Salvando..." : "Salvar"}</button>
+                                        <ButtonSimples />
 
                                         </Row>
                                     </Form>
@@ -402,22 +462,22 @@ const CadastroEndereco = () => {
                                                 enderecos.map(function (element) {
                                                     return (
                                                         <tr key={element.id}>
-                                                            <th>{element.cep}</th>
-                                                            <th>{element.estado}</th>
-                                                            <th>{element.cidade}</th>
-                                                            <th>{element.bairro}</th>
-                                                            <th>{element.logradouro}</th>
-                                                            <th>{element.numero}</th>
-                                                            <th>{element.empresaId}</th>
-                                                            <th>{element.complemento}</th>
-                                                            <th>{element.observacao}</th>
+                                                            <td>{element.cep}</td>
+                                                            <td>{element.estado}</td>
+                                                            <td>{element.cidade}</td>
+                                                            <td>{element.bairro}</td>
+                                                            <td>{element.logradouro}</td>
+                                                            <td>{element.numero}</td>
+                                                            <td>{element.empresaId.nomeFantasia}</td>
+                                                            <td>{element.complemento}</td>
+                                                            <td>{element.observacao}</td>
+                                                            <td><button type="button" className="text-light editar" onClick={() => { editar(element.id) }}>Editar</button></td>
                                                         </tr>
                                                     )
                                                 })
                                             }
                                         </tbody>
                                     </Table>
-
                                 </Card.Body>
                             </Card>
                         </Col>

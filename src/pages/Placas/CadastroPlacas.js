@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Url from '../../services/api';
+import ButtonSimples from '../../components/Button/ButtonSimples';
 import MenuNav from '../../components/Menu/MenuNavegacao';
 import '../../assets/css/GeralT.css';
 import useForm from "react-hook-form";
@@ -62,7 +63,7 @@ const CadastroPlacas = () => {
         if(id === 0){
             Axios.post(Url + "Placas", placa, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                     'Content-Type': 'application/json'
                 }
             })
@@ -78,7 +79,7 @@ const CadastroPlacas = () => {
             placa.id = id;
             Axios.put(Url + "Placas/", placa, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                     'Content-Type': 'application/json'
                 }
             })
@@ -161,7 +162,9 @@ const CadastroPlacas = () => {
                                             </Form.Group>
                                         </Row>
                                         <Row className="d-flex flex-row-reverse">
-                                        <button type="submit" className="b-linx m-2 text-light" disabled={!loading ? '' : 'none'}>{loading ? "Salvando..." : "Salvar"}</button>
+                                        {/* <button type="submit" 
+                                        className="b-linx m-2 text-light" disabled={!loading ? '' : 'none'}>{loading ? "Salvando..." : "Salvar"}</button> */}
+                                        <ButtonSimples />
                                         </Row>
                                     </Form>
                                 </Card.Body>
