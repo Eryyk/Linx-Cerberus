@@ -18,10 +18,10 @@ import {
 } from 'react-bootstrap';
 
 import cep from 'cep-promise';
- 
+
 const CadastroEndereco = () => {
 
-   
+
 
     const { handleSubmit, register, errors } = useForm();
 
@@ -37,9 +37,11 @@ const CadastroEndereco = () => {
     const [observacao, setObservacao] = useState('');
     const [empresaId, setEmpresaId] = useState(0);
 
+    const [cepFor, setCepFor] = useState([]);
+
     const [empresas, setEmpresas] = useState([]);
     const [enderecos, setEnderecos] = useState([]);
-    const [uf, setUF] = useState([]);
+    const [ufs, setUFs] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -51,13 +53,18 @@ const CadastroEndereco = () => {
     const UFs = () => {
         Axios.get("http://servicodados.ibge.gov.br/api/v1/localidades/estados")
             .then(data => {
-                setUF(data.data);
+                setUFs(data.data);
             })
             .catch(erro => { console.log(erro) })
     }
 
     const listaEmpresas = () => {
-        Axios.get(Url + "empresas")
+        Axios.get(Url + "empresas",{
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                'Content-Type': 'application/json'
+            }
+        })
             .then(data => {
                 setEmpresas(data.data)
             })
@@ -67,7 +74,12 @@ const CadastroEndereco = () => {
     }
 
     const listaEnderecos = () => {
-        Axios.get(Url + "Enderecos")
+        Axios.get(Url + "Enderecos",{
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                'Content-Type': 'application/json'
+            }
+        })
             .then(data => {
                 setEnderecos(data.data)
             })
@@ -125,7 +137,7 @@ const CadastroEndereco = () => {
             Endereco.id = id;
             Axios.put(Url + "Enderecos/", Endereco, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                     'Content-Type': 'application/json'
                 }
             })
@@ -143,7 +155,7 @@ const CadastroEndereco = () => {
                     setObservacao();
                     setEmpresaId();
                 })
-                .catch(erro =>{
+                .catch(erro => {
                     // console.log(erro)
                     toast.erro('Ocorreu um erro, tente novamente');
                     setId(0);
@@ -157,14 +169,44 @@ const CadastroEndereco = () => {
                     setObservacao();
                     setEmpresaId();
                 })
-                
-                .finally(() => {setLoading(false)})
+
+                .finally(() => { setLoading(false) })
         }
     }
 
-    fetch('https://api.pagar.me/1/zipcodes/' + cep, { method: 'get' })
-    .then(Ren => Ren.json())
-    .then(console.log)
+    const buscarCep = value => {
+        setCep(value);
+        if (value.length === 8) {
+            fetch('https://api.pagar.me/1/zipcodes/' + value)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data.city);
+                    
+                    
+                        setBairro(data.neighborhood);
+                        setLogradouro(data.street);
+                        setCidade(data.city);
+                        setEstado(data.state);
+                    
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+        else {
+            setBairro('');
+            setLogradouro('');
+            setCidade('');
+            setEstado('');
+        }
+    }
+    // fetch('https://api.pagar.me/1/zipcodes/' + cep)
+    // .then(Ren => Ren.json())
+    // // .then(data => setState({ cepFor: data }))
+    // .then((res) => {
+    //     console.log(res)
+    //     setEstado(res.state);
+    // })
 
     return (
         <Container fluid={true}>
@@ -197,7 +239,7 @@ const CadastroEndereco = () => {
                                                 <input
                                                     type="text"
                                                     onChange={e => {
-                                                        setCep(e.target.value);
+                                                        buscarCep(e.target.value);
                                                     }
                                                     }
                                                     value={cep || ''}
@@ -226,7 +268,7 @@ const CadastroEndereco = () => {
                                                         setEstado(e.target.value);
                                                     }
                                                     }
-                                                    value={estado || ''}
+                                                    value={estado || enderecos.estado || ''}
                                                     id="estado"
                                                     name="estado"
                                                     ref={register({
@@ -234,8 +276,8 @@ const CadastroEndereco = () => {
                                                     })}>
                                                     <option value="">Selecione o estado</option>
                                                     {
-                                                        uf.map(element => (
-                                                            <option key={element.id} value={element.nome}>{element.nome}</option>
+                                                        ufs.map(element => (
+                                                            <option key={element.id} value={element.sigla}>{element.nome}</option>
                                                         ))
                                                     }
                                                 </select>
@@ -427,7 +469,7 @@ const CadastroEndereco = () => {
                                             </Form.Group>
                                         </Row>
                                         <Row className="d-flex flex-row-reverse">
-                                        <ButtonSimples />
+                                            <ButtonSimples />
 
                                         </Row>
                                     </Form>

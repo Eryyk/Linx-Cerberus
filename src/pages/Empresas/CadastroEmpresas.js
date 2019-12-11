@@ -51,7 +51,12 @@ const CadastroEmpresa = () => {
 	// }
 
 	const atualizaEmpresas = () => {
-		Axios.get(Url + 'empresas')
+		Axios.get(Url + 'empresas', {
+			headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+				'Content-Type': 'application/json'
+			}
+		})
 			.then((data) => {
 				setListaEmpresa(data.data);
 			})
@@ -69,7 +74,7 @@ const CadastroEmpresa = () => {
 		};
 		if (id === 0) {
 			// Se o id for igual a 0 significa que um valor será cadastrado.
-			Axios.post(Url + 'empresas', empresa, {
+			Axios.post(Url + 'Empresas', empresa, {
 				headers: {
 					'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
 					'Content-Type': 'application/json'

@@ -34,7 +34,12 @@ const CadastroPlacas = () => {
     }, [])
 
     const listaPlacas = () => {
-        Axios.get(Url + "Placas")
+        Axios.get(Url + "Placas", {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                'Content-Type': 'application/json'
+            }
+        })
             .then(data => {
                 setPlacas(data.data)
             })

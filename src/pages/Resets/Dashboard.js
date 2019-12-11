@@ -23,7 +23,7 @@ const Dashboard = (props) => {
     const [placas, setPlacas] = useState([]);
     const [codigo, setCodigo] = useState('');
     const [enderecos, setEnderecos] = useState([]);
-    const [ultimoReset, setUltimoReset] = useState('');
+    const [reset, setReset] = useState('');
     const [totalReset, setTotalReset] = useState([]);
     const [uf, setUF] = useState([]);
 
@@ -31,32 +31,17 @@ const Dashboard = (props) => {
         listaPlacas();
         listaEnderecos();
         listaPlacasEnderecos();
-        listaUltimoReset();
-        listaTotalReset();
+        listaReset();
         UFs();
         // console.log(moment().format('YYYY-MM-DD'));
     }, [])
     const UFs = () => {
         Axios.get("http://servicodados.ibge.gov.br/api/v1/localidades/estados")
             .then(data => {
-                 setUF(data.data);
+                setUF(data.data);
                 // console.log(uf)
             })
             .catch(erro => { console.log(erro) })
-    }
-
-    const listaTotalReset = () => {
-        Axios.get(Url + "Reiniciacoes/ultimoReset", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(data => {
-                 listaTotalReset(data.data);
-            })
-            .catch(erro => { console.log(erro) })
-
     }
 
     const detalhes = (placaEnderecoId) => {
@@ -64,15 +49,15 @@ const Dashboard = (props) => {
         props.history.push("/registro/" + placaEnderecoId);
     }
 
-    const listaUltimoReset = () => {
-        Axios.get(Url + "Reiniciacoes/ultimoReset", {
+    const listaReset = () => {
+        Axios.get(Url + "Reiniciacoes", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
             .then(data => {
-                 setUltimoReset(data.data);
+                setReset(data.data);
                 // console.log('testando');
                 // console.log(data.data);
             })
@@ -82,12 +67,12 @@ const Dashboard = (props) => {
     const listaEnderecos = () => {
         Axios.get(Url + "Enderecos", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
             .then(data => {
-                 setPlacas(data.data);
+                setPlacas(data.data);
             })
             .catch(erro => { console.log(erro) })
 
@@ -96,12 +81,12 @@ const Dashboard = (props) => {
     const listaPlacas = () => {
         Axios.get(Url + "Placas", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
             .then(data => {
-                 setEnderecos(data.data);
+                setEnderecos(data.data);
             })
             .catch(erro => { console.log(erro) })
 
@@ -110,13 +95,13 @@ const Dashboard = (props) => {
     const listaPlacasEnderecos = () => {
         Axios.get(Url + "PlacaEndereco/dashboard", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
             .then(data => {
                 // console.log(data.data);
-                 setPlacaEnderecos(data.data);
+                setPlacaEnderecos(data.data);
             })
             .catch(erro => { console.log(erro) })
 
@@ -126,23 +111,23 @@ const Dashboard = (props) => {
         <Container fluid={true}>
             <Row>
                 <Col xs="3" lg="2" className="p-0">
-                {parseJwt().tipoUsuario === "Administrador" ? <MenuNav></MenuNav> : <MenuNavComum></MenuNavComum>}
+                    {parseJwt().tipoUsuario === "Administrador" ? <MenuNav></MenuNav> : <MenuNavComum></MenuNavComum>}
                 </Col>
                 <Col xs="9" lg="10" className="p-3 ">
                     <Row>
                         <Card.Body>
-                            <CardDeck className="bdt-linx">
+                            <CardDeck className="bdt-linx"
+                            >
 
-                                <CardSimples 
-                                title="Total Resets" 
-                                // texto={quantidadeResets}
-                                 />
+                                <CardSimples
+                                    title="Total Resets"
+                                    texto={reset.totaisResets}
+                                    />
                                 <CardSimples
                                     title="Ultimo Resets"
-                                    texto={ultimoReset.dataOcorrida}
-                                // {moment(ultimoReset.dataOcorrida).format("MM/dd/yyyy HH:mm")}
+                                    // texto={moment(reset.ultimoReset).format("MM/dd/yyyy HH:mm")}
                                 />
-                                <CardSimples title="Alertas"/>
+                                <CardSimples title="Alertas" />
                             </CardDeck>
                         </Card.Body>
                     </Row>
@@ -231,18 +216,18 @@ const Dashboard = (props) => {
                                         </thead>
                                         <tbody>
                                             {
-                                                placaEnderecos.map( (element) => {
+                                                placaEnderecos.map((element) => {
                                                     return (
                                                         <tr key={element.idplacaendereco}>
                                                             <td>{element.codigo}</td>
                                                             <td>{element.logradouro}</td>
                                                             <td>{element.ultimoReset != null ? element.ultimoReset.dataOcorrida : ''}</td>
                                                             <td>{element.quantidadeResets}</td>
-                                                            <td><button 
-                                                            type="button" 
-                                                            className="text-light maisDetalhes" 
-                                                            onClick={() => { detalhes(element.placaEnderecoId) }}>
-                                                            mais detalhes
+                                                            <td><button
+                                                                type="button"
+                                                                className="text-light maisDetalhes"
+                                                                onClick={() => { detalhes(element.placaEnderecoId) }}>
+                                                                mais detalhes
                                                             </button></td>
                                                         </tr>
                                                     );

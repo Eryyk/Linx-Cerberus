@@ -21,22 +21,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/css/GeralT.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-const RegistrosPLacas = () => {
+const RegistrosPLacas = (props) => {
 
     const { handleSubmit, register, errors } = useForm();
 
     const [id, setId] = useState(0);
-    const [placaId, setPlacaId] = useState('');
-    const [enderecoId, setEnderecoId] = useState('');
+    const [placaId, setPlacaId] = useState(0);
+    const [enderecoId, setEnderecoId] = useState(0);
     const [dataEntrada, setDataEntrada] = useState('');
     const [dataSaida, setDataSaida] = useState('');
-    const [tempoDesligado, setTempoDesligado] = useState('');
-    const [tempoEntreTestes, setTempoEntreTestes] = useState('');
-    const [tempoVoltarTestes, setTempoVoltarTestes] = useState('');
-    const [quantidadePings, setQuantidadePings] = useState('');
+    const [tempoDesligado, setTempoDesligado] = useState(0);
+    const [tempoEntreTestes, setTempoEntreTestes] = useState(0);
+    const [tempoVoltarTestes, setTempoVoltarTestes] = useState(0);
+    const [quantidadePings, setQuantidadePings] = useState(0);
     const [ipPlaca, setIpPlaca] = useState('');
     const [netmask, setNetmask] = useState('');
-    const [gatemay, setGatemay] = useState('');
+    const [gateway, setGateway] = useState('');
     const [dns, setDns] = useState('');
     const [alvo, setAlvo] = useState('');
     const [tipoAlvo, setTipoAlvo] = useState('');
@@ -94,46 +94,32 @@ const RegistrosPLacas = () => {
             .catch(erro => { console.log(erro) })
     }
 
-    const editar = (id) => {
-        let cronometro = placaEnderecos.filter(item => item.id === id);
-        if (cronometro.length > 0) {
-            setId(id);
-            setPlacaId(cronometro[0].placaId);
-            setEnderecoId(cronometro[0].enderecoId);
-            setDataEntrada(cronometro[0].dataEntrada);
-            setDataSaida(cronometro[0].dataSaida);
-            setTempoDesligado(cronometro[0].tempoDesligado);
-            setTempoEntreTestes(cronometro[0].tempoEntreTestes);
-            setTempoVoltarTestes(cronometro[0].tempoVoltarTestes);
-            setQuantidadePings(cronometro[0].quantidadePings);
-            setIpPlaca(cronometro[0].ipPlaca);
-            setNetmask(cronometro[0].netmask);
-            setGatemay(cronometro[0].gatemay);
-            setDns(cronometro[0].dns);
-            setAlvo(cronometro[0].alvo);
-            setTipoAlvo(cronometro[0].tipoAlvo);
-        }
+    const detalhes = (placaEnderecoId) => {
+        console.log(placaEnderecoId)
+        props.history.push("/registro/" + placaEnderecoId);
     }
 
     const onSubmit = (event) => {
 
         let cronometro = {
-            placaId: placaId,
-            enderecoId: enderecoId,
+            placaId: Number(placaId),
+            enderecoId: Number(enderecoId),
             dataEntrada: dataEntrada,
-            tempoDesligado: tempoDesligado,
-            tempoEntreTestes: tempoEntreTestes,
-            tempoVoltarTestes: tempoVoltarTestes,
-            quantidadePings: quantidadePings,
+            tempoDesligado: Number(tempoDesligado),
+            tempoEntreTestes: Number(tempoEntreTestes),
+            tempoVoltarTestes: Number(tempoVoltarTestes),
+            quantidadePings: Number(quantidadePings),
             ipPlaca: ipPlaca,
             netmask: netmask,
-            gatemay: gatemay,
+            gateway: gateway,
             dns: dns,
             alvo: alvo,
             tipoAlvo: tipoAlvo,
+            // "id": 0,
             // "placaId": 0,
             // "enderecoId": 0,
             // "dataEntrada": "2019-12-05T18:20:56.044Z",
+            // "dataSaida": "2019-12-05T18:20:56.044Z",
             // "tempoDesligado": 0,
             // "tempoEntreTestes": 0,
             // "tempoVoltarTestes": 0,
@@ -145,8 +131,7 @@ const RegistrosPLacas = () => {
             // "alvo": "string",
             // "tipoAlvo": "string",
         }
-
-        cronometro.id = id;
+        console.log(cronometro);
         if (id === 0) {
             Axios.post(Url + "PlacaEndereco", cronometro, {
                 headers: {
@@ -160,7 +145,7 @@ const RegistrosPLacas = () => {
 
                 })
                 .catch(erro => {
-                    toast.error("placa não registrada tente no")
+                    toast.error("placa não registrada tente no");
                 })
         }
     }
@@ -204,7 +189,7 @@ const RegistrosPLacas = () => {
                                                         })}>
                                                         <option value=""> Selecione a placa</option>
                                                         {
-                                                            placas.map(function (element) {
+                                                            placas.map(function(element) {
                                                                 return (
                                                                     <option key={element.id} value={element.id}>{element.codigo}</option>
                                                                 )
@@ -239,7 +224,7 @@ const RegistrosPLacas = () => {
                                                         })}>
                                                         <option value="">Selecione o endereço</option>
                                                         {
-                                                            enderecos.map(function (element) {
+                                                            enderecos.map(function(element) {
                                                                 return (
                                                                     <option key={element.id} value={element.id}>{element.logradouro}</option>
                                                                 )
@@ -364,7 +349,27 @@ const RegistrosPLacas = () => {
                                                         required: 'Netmask obrigatório'
                                                     })} />
                                                 {errors.netmask && <span className="error">{errors.netmask.message}</span>}
+                                            </Form.Group><Form.Group as={Col} className="">
+                                                <Form.Label className="text-dark">Gatemay</Form.Label>
+                                                <input
+                                                    type="text"
+                                                    onChange={e => {
+                                                        setGateway(e.target.value);
+                                                    }
+                                                    }
+                                                    value={gateway || ''}
+                                                    id="gateway"
+                                                    name="gateway"
+                                                    className="form-control"
+                                                    placeholder="Informe o ip do Alvo"
+                                                    ref={register({
+                                                        required: 'Ip da Placa obrigatório'
+                                                    })} />
+                                                {errors.ipPlaca && <span className="error">{errors.ipPlaca.message}</span>}
                                             </Form.Group>
+
+                                        </Row>
+                                        <Row>
                                             <Form.Group controlId="formBasicEmail" className="col-4">
                                                 <Form.Label className="text-dark">Dns</Form.Label>
                                                 <input
@@ -383,8 +388,6 @@ const RegistrosPLacas = () => {
                                                     })} />
                                                 {errors.dns && <span className="error">{errors.dns.message}</span>}
                                             </Form.Group>
-                                        </Row>
-                                        <Row>
                                             <Form.Group as={Col} className="">
                                                 <Form.Label className="text-dark">Alvo a ser pingado</Form.Label>
                                                 <input
@@ -422,10 +425,13 @@ const RegistrosPLacas = () => {
                                                 </select>
                                                 {errors.tipoAlvo && <span className="error">{errors.tipoAlvo.message}</span>}
                                             </Form.Group>
-                                            <Form.Group as={Col} className="">
+
+                                        </Row>
+                                        <Row>
+                                            <Form.Group className="col-4">
                                                 <Form.Label className="text-dark d-flex">Data de Entrada</Form.Label>
                                                 <input
-                                                    type="datetime-local" 
+                                                    type="datetime-local"
                                                     onChange={e => {
                                                         setDataEntrada(e.target.value);
                                                     }
@@ -444,7 +450,7 @@ const RegistrosPLacas = () => {
                                             </Form.Group>
                                         </Row>
                                         <Row className="d-flex flex-row-reverse">
-                                        <ButtonSimples />
+                                            <ButtonSimples />
                                         </Row>
                                     </Form>
                                 </Card.Body>
@@ -471,26 +477,21 @@ const RegistrosPLacas = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                placaEnderecos.map(function (element) {
+                                                placaEnderecos.map(function(element) {
                                                     return (
                                                         <tr key={element.placaEnderecoId}>
                                                             <td>{element.nomeEmpresa}</td>
                                                             <td>{element.logradouro}</td>
                                                             <td>{element.dataEntrada}</td>
                                                             <td>{element.codigoPlaca}</td>
-                                                            <th>
-															<button
-																type="button"
-																className="text-light editar"
-																onClick={() => {
-																	editar(element.id);
-																}}
-															>
-																Editar
-															</button>
-														</th>                                                      
-                                                    
-                                                          </tr>
+                                                            <td><button
+                                                                type="button"
+                                                                className="text-light maisDetalhes"
+                                                                onClick={() => { detalhes(element.placaEnderecoId) }}>
+                                                                mais detalhes
+                                                            </button></td>
+
+                                                        </tr>
                                                     )
                                                 })
                                             }

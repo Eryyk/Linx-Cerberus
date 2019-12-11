@@ -29,7 +29,7 @@ const Registro = (props) => {
     const [placaEnderecoId, setPlacaEnderecoId] = useState(0);
     const [codigoPlaca, setCodigoPlaca] = useState('');
     const [logrdouro, setLogrdouro] = useState('');
-    const [enpresas, setEnpresas] = useState('');
+    const [nomeFantasia, setNomeFantasia] = useState('');
     const [enderecosId, setEnderecosId] = useState('');
     const [dataEntrada, setDataEntrada] = useState('');
     const [dataSaida, setDataSaida] = useState('');
@@ -39,11 +39,12 @@ const Registro = (props) => {
     const [quantidadePings, setQuantidadePings] = useState('');
     const [ipEndereco, setIpEndereco] = useState('');
     const [netmask, setNetmask] = useState('');
-    const [gatemay, setGatemay] = useState('');
+    const [gateway, setGateway] = useState('');
     const [dns, setDns] = useState('');
     const [alvo, setAlvo] = useState('');
     const [tipoAlvo, setTipoAlvo] = useState('');
     const [placaEnderecos, setPlacaEnderecos] = useState([]);
+    const [saldePlaca, setSaldePlaca] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -51,12 +52,26 @@ const Registro = (props) => {
         listaPlacas();
         listaEnderecos();
         listaPlacasEnderecos();
+        listaSaldePlaca();
     }, [])
+
+    const listaSaldePlaca = () => {
+        Axios.get(Url + "SaldePlaca" + props.match.params.id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(data => {
+                setSaldePlaca(data.data[0]);
+            })
+            .catch(erro => { console.log(erro) })
+    }
 
     const listaPlacas = () => {
         Axios.get(Url + "placas", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
@@ -69,7 +84,7 @@ const Registro = (props) => {
     const listaEnderecos = () => {
         Axios.get(Url + "enderecos", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
@@ -109,25 +124,25 @@ const Registro = (props) => {
             setQuantidadePings(cronometro[0].quantidadePings);
             setIpEndereco(cronometro[0].ipEndereco);
             setNetmask(cronometro[0].netmask);
-            setGatemay(cronometro[0].gatemay);
+            setGateway(cronometro[0].gateway);
             setDns(cronometro[0].dns);
             setAlvo(cronometro[0].alvo);
             setTipoAlvo(cronometro[0].tipoAlvo);
         }
     }
 
-    const onSubmit = (event) => {
+    const alteraCronometro = (event) => {
 
         let cronometro = {
-            placaEnderecoId: placaEnderecoId,
+            placaEnderecoId: Number(placaEnderecoId),
             dataSaida: dataSaida,
-            tempoDesligado: tempoDesligado,
-            tempoEntreTestes: tempoEntreTestes,
-            tempoVoltarTestes: tempoVoltarTestes,
-            quantidadePings: quantidadePings,
+            tempoDesligado: Number(tempoDesligado),
+            tempoEntreTestes: Number(tempoEntreTestes),
+            tempoVoltarTestes: Number(tempoVoltarTestes),
+            quantidadePings: Number(quantidadePings),
             ipEndereco: ipEndereco,
             netmask: netmask,
-            gatemay: gatemay,
+            gateway: gateway,
             dns: dns,
             alvo: alvo,
             tipoAlvo: tipoAlvo,
@@ -166,6 +181,56 @@ const Registro = (props) => {
             .finally(() => { setLoading(false) })
     }
 
+    const alteraTempoSaida = (event) => {
+
+        let cronometro = {
+            placaEnderecoId: Number(placaEnderecoId),
+            dataSaida: dataSaida,
+            tempoDesligado: Number(tempoDesligado),
+            tempoEntreTestes: Number(tempoEntreTestes),
+            tempoVoltarTestes: Number(tempoVoltarTestes),
+            quantidadePings: Number(quantidadePings),
+            ipEndereco: ipEndereco,
+            netmask: netmask,
+            gateway: gateway,
+            dns: dns,
+            alvo: alvo,
+            tipoAlvo: tipoAlvo,
+            // "id": 0,
+            // "placaId": 0,
+            // "enderecoId": 0,
+            // "dataEntrada": "2019-12-05T18:20:56.044Z",
+            // "dataSaida": "2019-12-05T18:20:56.044Z",
+            // "tempoDesligado": 0,
+            // "tempoEntreTestes": 0,
+            // "tempoVoltarTestes": 0,
+            // "quantidadePings": 0,
+            // "ipPlaca": "string",
+            // "netmask": "string",
+            // "gateway": "string",
+            // "dns": "string",
+            // "alvo": "string",
+            // "tipoAlvo": "string",
+        }
+
+        cronometro.placaEnderecoId = placaEnderecoId;
+
+        Axios.put(Url + 'PlacaEndereco/' + placaEnderecoId, cronometro, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(data => {
+                listaPlacasEnderecos();
+                toast.success('Cronometro alterado');
+            })
+            .catch(error => {
+                toast.error('Ocorreu um erro, tente novamente');
+            })
+            .finally(() => { setLoading(false) })
+    }
+
     return (
         <Container fluid={true}>
             <ToastContainer position="top-right" autoClose={3000}></ToastContainer>
@@ -179,12 +244,12 @@ const Registro = (props) => {
                         <Card.Body>
                             <CardDeck >
                                 <CardSimples title="Placa" texto={placaEnderecos.codigoPlaca} />
-                                <CardSimples title="Condição" texto="Funcionando" />
-                                <CardSimples 
-                                title="Ultimo Reset" 
-                                // {placaEnderecos.Ulti}
+                                <CardSimples title="Condição" texto={placaEnderecos.situacaoPlaca} />
+                                <CardSimples
+                                    title="Ultimo Reset"
+                                texto={placaEnderecos.ultimoReset}
                                 />
-                                <CardSimples title="Resets" texto={quantidadePings}/>
+                                <CardSimples title="Resets" texto={placaEnderecos.totalResets} />
                             </CardDeck>
                         </Card.Body>
                     </Row>
@@ -193,16 +258,16 @@ const Registro = (props) => {
                         <Card.Header className="bg-linx bt-r-linx d-flex justify-content-between">
                             Cronômetro
                                     </Card.Header>
-                        <Card.Body className="text-dark d-flex">
+                        <Card.Body className="text-dark d-flex pb-0">
                             <Card.Text className="mr-2">
-                                UpTime - 10:10:10
+                                UpTime - {saldePlaca.uptime}
                                         </Card.Text>
-                            <Card.Text>
+                            {/* <Card.Text>
                                 Ultima alteração - 10:10:10
-                                        </Card.Text>
+                                        </Card.Text> */}
                         </Card.Body>
-                        <Card.Body>
-                            <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Card.Body className="pb-0">
+                            <Form onSubmit={handleSubmit(alteraCronometro)}>
                                 <Row>
                                     <Form.Group as={Col} className="">
                                         <Form.Label className="text-dark">Tempo Desligado</Form.Label>
@@ -318,6 +383,24 @@ const Registro = (props) => {
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} className="">
+                                        <Form.Label className="text-dark">Gatemay</Form.Label>
+                                        <input
+                                            type="text"
+                                            onChange={e => {
+                                                setGateway(e.target.value);
+                                            }
+                                            }
+                                            value={gateway || placaEnderecos.gateway}
+                                            id="gateway"
+                                            name="gateway"
+                                            className="form-control"
+                                            placeholder="Informe o ip do Alvo"
+                                            ref={register({
+                                                required: 'Ip da Placa obrigatório'
+                                            })} />
+                                        {errors.ipPlaca && <span className="error">{errors.ipPlaca.message}</span>}
+                                    </Form.Group>
+                                    <Form.Group as={Col} className="">
                                         <Form.Label className="text-dark">Dns</Form.Label>
                                         <input
                                             type="text"
@@ -353,7 +436,9 @@ const Registro = (props) => {
                                             })} />
                                         {errors.ipPlaca && <span className="error">{errors.ifpPlaca.message}</span>}
                                     </Form.Group>
-                                    <Form.Group as={Col} className="">
+                                </Row>
+                                <Row>
+                                    <Form.Group className="col-4">
                                         <Form.Label className="text-dark">Tipo do Alvo</Form.Label>
                                         <select className="form-control"
                                             onChange={e => {
@@ -374,7 +459,7 @@ const Registro = (props) => {
                                     </Form.Group>
                                 </Row>
                                 <Row className="d-flex flex-row-reverse">
-                                <ButtonSimples />
+                                    <ButtonSimples />
                                 </Row>
                             </Form>
 
@@ -391,43 +476,36 @@ const Registro = (props) => {
                                     <Row className="d-flex">
                                         <Card.Body className="d-contents text-dark">
                                             <Card.Text>
-                                            Logradouro
-                                            {/* {logradouro} */}
-                                            {placaEnderecos.logradouro}
+                                                Logradouro :
+                                                {placaEnderecos.logradouro}
                                             </Card.Text>
                                             <Card.Text>
-                                                Empresa
-                                                {placaEnderecos.enpresas}
-                                                </Card.Text>
+                                                Empresa :
+                                                 {placaEnderecos.nomeEmpresa}
+                                            </Card.Text>
                                             <Card.Text>
-                                                Data Entrada 
-                                                {/* {dataEntrada} */}
+                                                Data Entrada : 
                                                 {placaEnderecos.dataEntrada}
-
                                             </Card.Text>
-                                                <Form onSubmit={handleSubmit(onSubmit)} className="m-0">
-                                                <Form.Group as={Col} className="m-0">
-                                                 <Form.Label className="text-dark m-0">Data Saida</Form.Label>
-                                                <input
-                                                    type="datetime-local" 
-                                                    onChange={e => {
-                                                        setDataSaida(e.target.value);
-                                                    }
-                                                    }
-                                                    value={dataSaida || ''}
-                                                    id="dataSaida"
-                                                    name="dataSaida"
-                                                    className="form-control d-flex p-0"
-                                                    placeholder="Informe a Data de Saida"
+                                            <Form onSubmit={handleSubmit(alteraTempoSaida)} className="p-0">
+                                                <Form.Group as={Col} className="p-0">
+                                                    <Form.Label className="text-dark m-0">Data Saida</Form.Label>
+                                                    <input
+                                                        type="datetime-local"
+                                                        onChange={e => {
+                                                            setDataSaida(e.target.value);
+                                                        }
+                                                        }
+                                                        value={dataSaida || ''}
+                                                        id="dataSaida"
+                                                        name="dataSaida"
+                                                        className="form-control d-flex p-0"
+                                                        placeholder="Informe a Data de Saida"
                                                     />
                                                 </Form.Group>
                                                 <ButtonSimples />
-
-                                                </Form>
-
-                                            
+                                            </Form>
                                         </Card.Body>
-
                                         <Card.Body className="map-linx p-3 pb-5  ">
                                             {/* Mapa Componentizado Localizando onde esta a placa */}
                                             <Mapa />
@@ -438,6 +516,10 @@ const Registro = (props) => {
 
                             </Card>
 
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
                         </Col>
                     </Row>
                 </Col>

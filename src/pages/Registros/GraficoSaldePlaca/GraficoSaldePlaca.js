@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
-import '../../../assets/css/GeralT.css'
-import Url from '../../../services/api'
-
-import axios from 'axios';
+import Axios from "axios";
 
 const options = {
   maintainAspectRatio: false,
@@ -55,7 +52,7 @@ let line = {
   ]
 };
 
-export default class Grafico extends Component {
+export default class GraficoSaldePlaca extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,14 +68,8 @@ export default class Grafico extends Component {
   }
 
   componentDidMount() {
-    axios.get(Url + 'Reiniciacoes/lista', {
-      headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
-          'Content-Type': 'application/json'
-      }
-  })
+    axios.get(Url + 'SaudePlacas/' + props.match.params.id)
       .then(data => {
-        // console.log(data.data);
         data.data.map((item) => {
           this.state.labelsRelatorioResets.push(this.formataData(item.date))
         })
@@ -88,7 +79,7 @@ export default class Grafico extends Component {
         data.data.map((item) => {
           this.state.dataRelatorioResets.push(item.count)
         })
-        
+
 
         line.datasets[0].data = this.state.dataRelatorioResets;
       });
@@ -98,7 +89,7 @@ export default class Grafico extends Component {
 
     return (
       <div className="gb-linx">
-          <Line data={line} options={options}  height="250"  />
+        <Line data={line} options={options} height="250" />
       </div>
     );
   }

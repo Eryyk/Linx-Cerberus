@@ -36,7 +36,7 @@ const CadastroUsuario = () => {
     const listaUsuarios = () => {
         Axios.get(Url + "usuarios", {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                 'Content-Type': 'application/json'
             }
         })
@@ -56,7 +56,7 @@ const CadastroUsuario = () => {
         Axios.post(Url + "usuarios", usuario,
             {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Cerberus-chave-autenticacao'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('usuario'),
                     'Content-Type': 'application/json'
                 }
             })
