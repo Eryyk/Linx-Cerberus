@@ -15,7 +15,7 @@ export default class CardSimples extends Component {
                  <Card.Header className="bg-linx f-linx bt-r-linx">
                      {this.props.title}
                  </Card.Header>
-                 <Card.Body >
+                 <Card.Body className="text-center h2" >
                      {this.props.texto}
                  </Card.Body>
             </Card>

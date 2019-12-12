@@ -1,4 +1,4 @@
-var Url = "http://192.168.43.10:5000/api/"
+var Url = "http://192.168.200.1:5000/api/"
 
 export default Url;
 

@@ -3,7 +3,7 @@ import Axios from 'axios';
 import Logo from '../../assets/imagens/logo.png';
 import Url from '../../services/api';
 import '../../assets/css/GeralT.css';
-import { parseJwt } from '../../services/auth';
+import { usuarioAutenticado, parseJwt } from '../../services/auth';
 
 
 import { Col, Row, Image, Container, Card, Form, Button } from 'react-bootstrap';
@@ -11,33 +11,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Login extends Component {
     constructor() {
-        super()
-
+        super();
         this.state = {
-            email: ''
-            , senha: ''
+            email: '',
+            senha: ''
         }
     }
 
+    atualizaEstadoEmail(event) {
+        this.setState({ email: event.target.value });
+    }
+
+    atualizaEstadoSenha(event) {
+        this.setState({ senha: event.target.value });
+    }
     efetuarLogin = (event) => {
         event.preventDefault();
 
-
-
-        localStorage.removeItem("Cerberus-chave-autenticacao");
-
-        Axios.post(Url + 'Login', {
-            email: this.state.email
-            , senha: this.state.senha
-        })
+        Axios.post(Url + 'Login', { email: this.state.email , senha: this.state.senha })
         .then(data => {
-            // console.log(data.data);
+            
             if (data.status === 200) {
-                console.log(data.data);
-                localStorage.setItem("Cerberus-chave-autenticacao", data.data.token);
-                //Verifica o tipo de usuário e redireciona para a página default
-                console.log(parseJwt().Role);
-                if (parseJwt().Role === "Administrador") {
+                localStorage.setItem('usuario', data.data.token);
+                console.log("Role", parseJwt().tipoUsuario);
+                if (parseJwt().tipoUsuario === "Administrador"){
                     this.props.history.push("/Dashboard");
                 } else {
                     this.props.history.push("/Dashboard");
@@ -45,17 +42,10 @@ class Login extends Component {
             }
         })
         .catch(erro => {
-            this.setState({ erroMensagem: 'Email ou senha inválido' });
+            this.setState({ erro: 'Email ou senha inválido' });
         })
     }
 
-    atualizaEstadoEmail(event) {
-        this.setState({ email: event.target.value })
-    }
-
-    atualizaEstadoSenha(event) {
-        this.setState({ senha: event.target.value })
-    }
 
     render() {
         return (
