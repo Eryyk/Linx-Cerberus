@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
 import Axios from "axios";
+import Url from '../../../services/api'
+
 
 const options = {
   maintainAspectRatio: false,
@@ -68,7 +70,7 @@ export default class GraficoReset extends Component {
   }
 
   componentDidMount() {
-    axios.get(Url + 'SaudePlaas')
+    Axios.get(Url + 'SaudePlaas' +  1)
       .then(data => {
         data.data.map((item) => {
           this.state.labelsRelatorioResets.push(this.formataData(item.date))

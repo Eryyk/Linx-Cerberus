@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ButtonSimples from '../../components/Button/ButtonSimples';
 import registro from '../../pages/Resets/Dashboard';
+import GraficoReset from '../Registros/GraficoReset/GraficoReset'; 
+import GraficoSalde from '../Registros/GraficoSaldePlaca/GraficoSaldePlaca';
 
 import {
     Container,
@@ -254,7 +256,7 @@ const Registro = (props) => {
                         </Card.Body>
                     </Row>
 
-                    <Card className="f-linx b-r-linx ">
+                    <Card className="f-linx b-r-linx">
                         <Card.Header className="bg-linx bt-r-linx d-flex justify-content-between">
                             Cronômetro
                                     </Card.Header>
@@ -518,8 +520,27 @@ const Registro = (props) => {
 
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
+                    <Row className="mt-4 mb-4">
+                        <Col xs="6" lg="6">
+                        <Card className="bdm-linx b-r-linx f-linx">
+                                <Card.Header className="bg-linx bt-r-linx">
+                                    Resets
+                                    </Card.Header>
+                                <Card.Body>
+                                    <GraficoReset />
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xs="6" lg="6">
+                        <Card className="bdm-linx b-r-linx f-linx">
+                                <Card.Header className="bg-linx bt-r-linx">
+                                    Resets
+                                    </Card.Header>
+                                <Card.Body>
+                                    <GraficoSalde />
+                                </Card.Body>
+                            </Card>
+
                         </Col>
                     </Row>
                 </Col>

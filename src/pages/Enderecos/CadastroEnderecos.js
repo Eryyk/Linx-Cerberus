@@ -5,6 +5,7 @@ import MenuNav from '../../components/Menu/MenuNavegacao';
 import useForm from "react-hook-form";
 import ButtonSimples from '../../components/Button/ButtonSimples';
 import { ToastContainer, toast } from 'react-toastify';
+import { cepMask } from '../../util/mask';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
@@ -175,19 +176,16 @@ const CadastroEndereco = () => {
     }
 
     const buscarCep = value => {
-        setCep(value);
-        if (value.length === 8) {
+        setCep(cepMask(value));
+        if (value.length === 9 ) {
             fetch('https://api.pagar.me/1/zipcodes/' + value)
                 .then(response => response.json())
                 .then((data) => {
                     console.log(data.city);
-                    
-                    
                         setBairro(data.neighborhood);
                         setLogradouro(data.street);
                         setCidade(data.city);
                         setEstado(data.state);
-                    
                 })
                 .catch((error) => {
                     console.log(error)
