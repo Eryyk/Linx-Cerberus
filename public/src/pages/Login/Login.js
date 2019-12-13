@@ -73,9 +73,11 @@ class Login extends Component {
                                                 onChange={this.atualizaEstadoSenha.bind(this)} />
                                             </Form.Group>
                                         <Button
+                                        type="submit"
                                             value="Login"
                                             variant="outline-success"
                                             className="bt-block b-linx m-3 text-light w-25 "
+                                            onSubmit={this.efetuarLogin}
                                             onClick={this.efetuarLogin}
                                         >Login</Button>
 

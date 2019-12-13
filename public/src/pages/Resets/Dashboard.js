@@ -139,7 +139,7 @@ const Dashboard = (props) => {
                                 <Card.Header className="bg-linx bt-r-linx">
                                     Resets
                                     </Card.Header>
-                                <Card.Body>
+                                <Card.Body className="p-3">
                                     <Grafico />
                                 </Card.Body>
                             </Card>
