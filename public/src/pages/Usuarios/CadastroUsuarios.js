@@ -28,7 +28,6 @@ const CadastroUsuario = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(false);
 
-
     useEffect(() => {
         listaUsuarios();
     }, [])

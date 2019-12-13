@@ -4,7 +4,7 @@ import Logo from '../../assets/imagens/logo.png';
 import Url from '../../services/api';
 import '../../assets/css/GeralT.css';
 import { usuarioAutenticado, parseJwt } from '../../services/auth';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Col, Row, Image, Container, Card, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -42,7 +42,7 @@ class Login extends Component {
             }
         })
         .catch(erro => {
-            this.setState({ erro: 'Email ou senha inválido' });
+            toast.error('Usuário invalido');
         })
     }
 
