@@ -280,7 +280,7 @@ const Registro = (props) => {
                                                 setTempoDesligado(e.target.value);
                                             }
                                             }
-                                            value={tempoDesligado || placaEnderecos.tempoDesligado}
+                                            value={tempoDesligado || placaEnderecos.tempoDesligado || ""}
                                             id="tempoDesligado"
                                             name="tempoDesligado"
                                             className="form-control"
@@ -298,7 +298,7 @@ const Registro = (props) => {
                                                 setTempoVoltarTestes(e.target.value);
                                             }
                                             }
-                                            value={tempoVoltarTestes || placaEnderecos.tempoVoltarTestes}
+                                            value={tempoVoltarTestes || placaEnderecos.tempoVoltarTestes || ""}
                                             id="tempoVoltarTestes"
                                             name="tempoVoltarTestes"
                                             className="form-control"
@@ -316,7 +316,7 @@ const Registro = (props) => {
                                                 setTempoEntreTestes(e.target.value);
                                             }
                                             }
-                                            value={tempoEntreTestes || placaEnderecos.tempoEntreTestes}
+                                            value={tempoEntreTestes || placaEnderecos.tempoEntreTestes || ""}
                                             id="tempoEntreTestes"
                                             name="tempoEntreTestes"
                                             className="form-control"
@@ -336,7 +336,7 @@ const Registro = (props) => {
                                                 setQuantidadePings(e.target.value);
                                             }
                                             }
-                                            value={quantidadePings || placaEnderecos.quantidadePings}
+                                            value={quantidadePings || placaEnderecos.quantidadePings || ""}
                                             id="quantidadePings"
                                             name="quantidadePings"
                                             className="form-control"
@@ -354,7 +354,7 @@ const Registro = (props) => {
                                                 setIpEndereco(e.target.value);
                                             }
                                             }
-                                            value={ipEndereco || placaEnderecos.ipEndereco}
+                                            value={ipEndereco || placaEnderecos.ipEndereco || ""}
                                             id="ipEndereco"
                                             name="ipEndereco"
                                             className="form-control"
@@ -372,7 +372,7 @@ const Registro = (props) => {
                                                 setNetmask(e.target.value);
                                             }
                                             }
-                                            value={netmask || placaEnderecos.netmask}
+                                            value={netmask || placaEnderecos.netmask || ""}
                                             id="netmask"
                                             name="netmask"
                                             className="form-control"
@@ -385,14 +385,14 @@ const Registro = (props) => {
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} className="">
-                                        <Form.Label className="text-dark">Gatemay</Form.Label>
+                                        <Form.Label className="text-dark">Gateway</Form.Label>
                                         <input
                                             type="text"
                                             onChange={e => {
                                                 setGateway(e.target.value);
                                             }
                                             }
-                                            value={gateway || placaEnderecos.gateway}
+                                            value={gateway || placaEnderecos.gateway || ""}
                                             id="gateway"
                                             name="gateway"
                                             className="form-control"
@@ -410,7 +410,7 @@ const Registro = (props) => {
                                                 setDns(e.target.value);
                                             }
                                             }
-                                            value={dns || placaEnderecos.dns}
+                                            value={dns || placaEnderecos.dns || ""}
                                             id="dns"
                                             name="dns"
                                             className="form-control"
@@ -428,7 +428,7 @@ const Registro = (props) => {
                                                 setAlvo(e.target.value);
                                             }
                                             }
-                                            value={alvo || placaEnderecos.alvo}
+                                            value={alvo || placaEnderecos.alvo || ""}
                                             id="alvo"
                                             name="alvo"
                                             className="form-control"
